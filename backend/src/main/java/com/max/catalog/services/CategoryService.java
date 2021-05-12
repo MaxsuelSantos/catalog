@@ -2,8 +2,11 @@ package com.max.catalog.services;
 
 import com.max.catalog.dto.CategoryDTO;
 import com.max.catalog.entities.Category;
+import com.max.catalog.exceptions.DatabaseException;
 import com.max.catalog.exceptions.ResourceNotFoundException;
 import com.max.catalog.repositories.CategoryRepository;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +31,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entity not found!"));
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new CategoryDTO(category);
     }
 
@@ -49,6 +52,16 @@ public class CategoryService {
             return new CategoryDTO(category);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found: " + id);
+        }
+    }
+
+    public void delete(Long id) {
+        try {
+            categoryRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResourceNotFoundException("Id not found: " + id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Integrity violation");
         }
     }
 }
