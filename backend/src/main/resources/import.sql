@@ -1,3 +1,11 @@
 INSERT INTO tb_category (name, created_At) VALUES ('Books', NOW());
 INSERT INTO tb_category (name, created_At) VALUES ('Electronics', NOW());
 INSERT INTO tb_category (name, created_At) VALUES ('Computers', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Medicamentos', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Higiene', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Cuidados pessoais', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Supermercado', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Farmácia', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Roupas', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Frutas', NOW());
+INSERT INTO tb_category (name, created_At) VALUES ('Escolar', NOW());
