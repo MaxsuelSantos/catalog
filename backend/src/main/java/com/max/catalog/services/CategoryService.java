@@ -2,19 +2,19 @@ package com.max.catalog.services;
 
 import com.max.catalog.dto.CategoryDTO;
 import com.max.catalog.entities.Category;
-import com.max.catalog.exceptions.EntityNotFoundException;
+import com.max.catalog.exceptions.ResourceNotFoundException;
 import com.max.catalog.repositories.CategoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
@@ -28,7 +28,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public CategoryDTO findById(Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Entity not found!"));
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Entity not found!"));
         return new CategoryDTO(category);
     }
 
@@ -38,5 +38,17 @@ public class CategoryService {
         category.setName(dto.getName());
         category = categoryRepository.save(category);
         return new CategoryDTO(category);
+    }
+
+    @Transactional
+    public CategoryDTO update(Long id, CategoryDTO categoryDTO) {
+        try {
+            Category category = categoryRepository.getOne(id);
+            category.setName(categoryDTO.getName());
+            category = categoryRepository.save(category);
+            return new CategoryDTO(category);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Id not found: " + id);
+        }
     }
 }

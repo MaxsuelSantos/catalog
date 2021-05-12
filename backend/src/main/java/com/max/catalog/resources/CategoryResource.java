@@ -13,7 +13,7 @@ import java.util.List;
 @RequestMapping("categories")
 public class CategoryResource {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     public CategoryResource(CategoryService categoryService) {
         this.categoryService = categoryService;
@@ -37,5 +37,11 @@ public class CategoryResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
+        categoryDTO = categoryService.update(id, categoryDTO);
+        return ResponseEntity.ok(categoryDTO);
     }
 }
