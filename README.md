@@ -21,7 +21,7 @@ Pré-requisitos: Java 11
 
 ```sh
 # clonar repositório
-git clone https://github.com/MaxsuelSantos/catalog
+git clone https://github.com/MaxsuelSantos/catalog.git
 
 # entrar na pasta do projeto back end
 cd backend
