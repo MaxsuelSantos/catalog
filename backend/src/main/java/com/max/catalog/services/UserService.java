@@ -3,6 +3,7 @@ package com.max.catalog.services;
 import com.max.catalog.dto.RoleDTO;
 import com.max.catalog.dto.UserDTO;
 import com.max.catalog.dto.UserInsertDTO;
+import com.max.catalog.dto.UserUpdateDTO;
 import com.max.catalog.entities.Role;
 import com.max.catalog.entities.User;
 import com.max.catalog.exceptions.DatabaseException;
@@ -54,7 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO userDTO) {
+    public UserDTO update(Long id, UserUpdateDTO userDTO) {
         try {
             User user = userRepository.getOne(id);
             copyDtoToEntity(userDTO, user);
