@@ -1,5 +1,8 @@
 package com.max.catalog.dto;
 
+import com.max.catalog.services.validation.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO {
 
     private String password;
