@@ -25,6 +25,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @ExtendWith(SpringExtension.class)
 public class ProductServiceTests {
 
@@ -55,12 +57,14 @@ public class ProductServiceTests {
         category = Factory.createCategory();
         page = new PageImpl<>(List.of(product));
 
-        Mockito.when(productRepository.findAll((Pageable) ArgumentMatchers.any())).thenReturn(page);
+        Mockito.when(productRepository.findAll((Pageable) any())).thenReturn(page);
 
-        Mockito.when(productRepository.save(ArgumentMatchers.any())).thenReturn(product);
+        Mockito.when(productRepository.save(any())).thenReturn(product);
 
         Mockito.when(productRepository.findById(existingId)).thenReturn(Optional.of(product));
         Mockito.when(productRepository.findById(nonExistingId)).thenReturn(Optional.empty());
+
+        Mockito.when(productRepository.find(any(), any(), any())).thenReturn(page);
 
         Mockito.when(productRepository.getOne(existingId)).thenReturn(product);
         Mockito.when(productRepository.getOne(nonExistingId)).thenThrow(EntityNotFoundException.class);
@@ -83,7 +87,9 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void updateShouldReturnProductDTOWhenIdExists() {
+    public void updateShouldReturnProductDTOWhenIdExists() throws Exception {
+
+        ProductDTO productDTO = new ProductDTO();
 
         ProductDTO result = service.update(existingId, productDTO);
 
@@ -114,10 +120,10 @@ public class ProductServiceTests {
 
         Pageable pageable = PageRequest.of(0, 10);
 
-        Page<ProductDTO> result = service.findAllPaged(1L, "Electronics", pageable);
+        Page<ProductDTO> result = service.findAllPaged(0L, "", pageable);
 
         Assertions.assertNotNull(result);
-        Mockito.verify(productRepository).findAll(pageable);
+
     }
 
     @Test
